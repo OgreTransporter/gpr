@@ -77,7 +77,8 @@ void gpr_read_image::ReadTile (dng_host &host,
                                    uint32 tileByteCount,
                                    AutoPtr<dng_memory_block> &compressedBuffer,
                                    AutoPtr<dng_memory_block> &uncompressedBuffer,
-                                   AutoPtr<dng_memory_block> &subTileBlockBuffer)
+                                   AutoPtr<dng_memory_block> &subTileBlockBuffer,
+                                   bool usingMultipleThreads)
 {
     
     if( ifd.fCompression == ccVc5 )
@@ -100,7 +101,7 @@ void gpr_read_image::ReadTile (dng_host &host,
                 }
                 else
                 {
-                    pixel_format = VC5_DECODER_PIXEL_FORMAT_GBRG_12;
+                    pixel_format = VC5_DECODER_PIXEL_FORMAT_GBRG_14;
                 }
                 
                 if( DecodeVC5( image, *_vc5_buffer, pixel_format ) )
@@ -122,7 +123,8 @@ void gpr_read_image::ReadTile (dng_host &host,
                                   tileByteCount,
                                   compressedBuffer,
                                   uncompressedBuffer,
-                                  subTileBlockBuffer);
+                                  subTileBlockBuffer,
+                                  usingMultipleThreads);
     }
 }
 

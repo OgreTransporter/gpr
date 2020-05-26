@@ -78,7 +78,8 @@ public:
                     AutoPtr<dng_memory_block> &compressedBuffer,
                     AutoPtr<dng_memory_block> &uncompressedBuffer,
                     AutoPtr<dng_memory_block> &subTileBlockBuffer,
-                    AutoPtr<dng_memory_block> &tempBuffer);
+                    AutoPtr<dng_memory_block> &tempBuffer,
+                    bool usingMultipleThreads);
     
 };
 

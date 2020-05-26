@@ -114,7 +114,8 @@ void gpr_image_writer::WriteTile (dng_host &host,
                                       AutoPtr<dng_memory_block> &compressedBuffer,
                                       AutoPtr<dng_memory_block> &uncompressedBuffer,
                                       AutoPtr<dng_memory_block> &subTileBlockBuffer,
-                                      AutoPtr<dng_memory_block> &tempBuffer)
+                                      AutoPtr<dng_memory_block> &tempBuffer,
+                                      bool usingMultipleThreads)
 {
     if( ifd.fCompression == ccVc5 )
     {
@@ -122,7 +123,7 @@ void gpr_image_writer::WriteTile (dng_host &host,
     }
     else
     {
-        return dng_image_writer::WriteTile( host, ifd, stream, image, tileArea, fakeChannels, compressedBuffer, uncompressedBuffer, subTileBlockBuffer, tempBuffer );
+        return dng_image_writer::WriteTile( host, ifd, stream, image, tileArea, fakeChannels, compressedBuffer, uncompressedBuffer, subTileBlockBuffer, tempBuffer, usingMultipleThreads );
     }
 }
 

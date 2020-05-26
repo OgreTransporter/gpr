@@ -56,7 +56,8 @@ public:
                    uint32 tileByteCount,
                    AutoPtr<dng_memory_block> &compressedBuffer,
                    AutoPtr<dng_memory_block> &uncompressedBuffer,
-                   AutoPtr<dng_memory_block> &subTileBlockBuffer);
+                   AutoPtr<dng_memory_block> &subTileBlockBuffer,
+                   bool usingMultipleThreads);
 };
 
 #endif // GPR_READING

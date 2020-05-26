@@ -148,10 +148,14 @@ static void set_vc5_encoder_parameters( vc5_encoder_parameters& vc5_encoder_para
         case PIXEL_FORMAT_RGGB_12P:
             vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_RGGB_12P;
             break;
-            
-        case PIXEL_FORMAT_RGGB_14:
-            vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_RGGB_14;
-            break;
+
+		case PIXEL_FORMAT_RGGB_14:
+			vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_RGGB_14;
+			break;
+
+		case PIXEL_FORMAT_RGGB_16:
+			vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_RGGB_16;
+			break;
             
         case PIXEL_FORMAT_GBRG_12:
             vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_GBRG_12;
@@ -160,7 +164,15 @@ static void set_vc5_encoder_parameters( vc5_encoder_parameters& vc5_encoder_para
         case PIXEL_FORMAT_GBRG_12P:
             vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_GBRG_12P;
             break;
-            
+
+		case PIXEL_FORMAT_GBRG_14:
+			vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_GBRG_14;
+			break;
+
+		case PIXEL_FORMAT_GBRG_16:
+			vc5_encoder_params.pixel_format = VC5_ENCODER_PIXEL_FORMAT_GBRG_16;
+			break;
+
         default:
             break;
     }
@@ -616,7 +628,7 @@ static bool read_dng(const gpr_allocator*       allocator,
             
             negative->ReadVc5Image(host, *dng_read_stream, info, reader);
 
-            dng_ifd &rawIFD = *info.fIFD [info.fMainIndex].Get ();
+            dng_ifd &rawIFD = *info.fIFD [info.fMainIndex];
 	        
             if (rawIFD.fOpcodeList2Count)
             {
@@ -715,7 +727,7 @@ static bool read_dng(const gpr_allocator*       allocator,
                 }
                 
                 {
-                    dng_ifd &rawIFD = *info.fIFD [info.fMainIndex].Get ();
+                    dng_ifd &rawIFD = *info.fIFD [info.fMainIndex];
                  
                     gpr_saturation_level& dgain_saturation_level = tuning_info.dgain_saturation_level;
                     
@@ -752,6 +764,13 @@ static bool read_dng(const gpr_allocator*       allocator,
                         {
                             tuning_info.pixel_format = PIXEL_FORMAT_GBRG_12;
                         }
+						else if (dgain_saturation_level.level_red == 16383 &&
+							dgain_saturation_level.level_green_even == 16383 &&
+							dgain_saturation_level.level_green_odd == 16383 &&
+							dgain_saturation_level.level_blue == 16383)
+						{
+							tuning_info.pixel_format = PIXEL_FORMAT_GBRG_14;
+						}
                         else
                         {
                             assert(0);
@@ -1042,14 +1061,26 @@ static void write_dng(const gpr_allocator*          allocator,
                 vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_RGGB_12;
                 break;
 
-            case PIXEL_FORMAT_RGGB_14:
-                vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_RGGB_14;
-                break;
+			case PIXEL_FORMAT_RGGB_14:
+				vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_RGGB_14;
+				break;
 
-            case PIXEL_FORMAT_GBRG_12:
-                vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_GBRG_12;
-                break;
-                        
+			case PIXEL_FORMAT_RGGB_16:
+				vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_RGGB_16;
+				break;
+
+			case PIXEL_FORMAT_GBRG_12:
+				vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_GBRG_12;
+				break;
+
+			case PIXEL_FORMAT_GBRG_14:
+				vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_GBRG_14;
+				break;
+
+			case PIXEL_FORMAT_GBRG_16:
+				vc5_decoder_params.pixel_format = VC5_DECODER_PIXEL_FORMAT_GBRG_16;
+				break;
+
             default:
                 assert(0);
                 return;
@@ -1113,6 +1144,7 @@ static void write_dng(const gpr_allocator*          allocator,
                 break;
             case PIXEL_FORMAT_GBRG_12:
             case PIXEL_FORMAT_GBRG_12P:
+			case PIXEL_FORMAT_GBRG_14:
                 negative->SetQuadBlacks(static_black_level.g_b_black,
                                         static_black_level.b_black,
                                         static_black_level.r_black,
@@ -1154,7 +1186,7 @@ static void write_dng(const gpr_allocator*          allocator,
         // Add noise profile
         if ( tuning_info->noise_scale > 0 )
         {
-            std::vector<dng_noise_function> noiseFunctions;
+            dng_std_vector<dng_noise_function> noiseFunctions;
             noiseFunctions.push_back( dng_noise_function ( tuning_info->noise_scale, tuning_info->noise_offset ) );
             negative->SetNoiseProfile( dng_noise_profile ( noiseFunctions ) );
         }
@@ -1244,7 +1276,7 @@ static void write_dng(const gpr_allocator*          allocator,
     {
         negative->SetBayerMosaic(1);
     }
-    else if( convert_params->tuning_info.pixel_format == PIXEL_FORMAT_GBRG_12 || convert_params->tuning_info.pixel_format == PIXEL_FORMAT_GBRG_12P )
+    else if( convert_params->tuning_info.pixel_format == PIXEL_FORMAT_GBRG_12 || convert_params->tuning_info.pixel_format == PIXEL_FORMAT_GBRG_12P || convert_params->tuning_info.pixel_format == PIXEL_FORMAT_GBRG_14)
     {
         negative->SetBayerMosaic(3);
     }
@@ -1395,7 +1427,8 @@ static void write_dng(const gpr_allocator*          allocator,
                 
                 jpeg_preview->fInfo.fIsPrimary = true;
                 
-                const gpr_rgb_buffer& rgb_buffer = gpr_writer->get_rgb_thumbnail();
+
+				const gpr_rgb_buffer& rgb_buffer = gpr_writer->get_rgb_thumbnail();
                 
                 gpr_buffer_auto buffer( allocator->Alloc, allocator->Free );
                 
