@@ -1,16 +1,9 @@
 /*****************************************************************************/
-// Copyright 2006-2007 Adobe Systems Incorporated
+// Copyright 2006-2019 Adobe Systems Incorporated
 // All Rights Reserved.
 //
 // NOTICE:  Adobe permits you to use, modify, and distribute this file in
 // accordance with the terms of the Adobe license agreement accompanying it.
-/*****************************************************************************/
-
-/* $Id: //mondo/dng_sdk_1_4/dng_sdk/source/dng_string_list.cpp#1 $ */ 
-/* $DateTime: 2012/05/30 13:28:51 $ */
-/* $Change: 832332 $ */
-/* $Author: tknoll $ */
-
 /*****************************************************************************/
 
 #include "dng_string_list.h"
@@ -19,8 +12,9 @@
 #include "dng_exceptions.h"
 #include "dng_string.h"
 #include "dng_utils.h"
-
+#if GPR_WRITING || GPR_READING
 #include "gpr_allocator.h"
+#endif
 
 /*****************************************************************************/
 
@@ -52,8 +46,12 @@ void dng_string_list::Allocate (uint32 minSize)
 		{
 		
 		uint32 newSize = Max_uint32 (minSize, fAllocated * 2);
-
-        dng_string **list = (dng_string **)gpr_global_malloc (newSize * sizeof (dng_string *));
+		
+#if GPR_WRITING || GPR_READING
+		dng_string **list = (dng_string **) gpr_global_malloc (newSize * sizeof (dng_string *));
+#else
+		dng_string **list = (dng_string **) malloc (newSize * sizeof (dng_string *));
+#endif
 		
 		if (!list)
 			{
@@ -65,13 +63,19 @@ void dng_string_list::Allocate (uint32 minSize)
 		if (fCount)
 			{
 			
-			DoCopyBytes (fList, list, fCount * (uint32) sizeof (dng_string *));
+			memcpy (list, fList, fCount * (uint32) sizeof (dng_string *));
 			
 			}
 			
 		if (fList)
 			{
-            gpr_global_free( fList );
+			
+#if GPR_WRITING || GPR_READING
+			gpr_global_free (fList);
+#else
+			free (fList);
+#endif
+			
 			}
 			
 		fList = list;
@@ -147,8 +151,12 @@ void dng_string_list::Clear ()
 			delete fList [index];
 			
 			}
-            
-        gpr_global_free( fList );
+			
+#if GPR_WRITING || GPR_READING
+		gpr_global_free (fList);
+#else
+		free (fList);
+#endif
 		
 		fList = NULL;
 		

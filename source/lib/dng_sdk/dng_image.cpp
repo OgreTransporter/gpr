@@ -1,16 +1,9 @@
 /*****************************************************************************/
-// Copyright 2006-2008 Adobe Systems Incorporated
+// Copyright 2006-2019 Adobe Systems Incorporated
 // All Rights Reserved.
 //
 // NOTICE:  Adobe permits you to use, modify, and distribute this file in
 // accordance with the terms of the Adobe license agreement accompanying it.
-/*****************************************************************************/
-
-/* $Id: //mondo/dng_sdk_1_4/dng_sdk/source/dng_image.cpp#1 $ */ 
-/* $DateTime: 2012/05/30 13:28:51 $ */
-/* $Change: 832332 $ */
-/* $Author: tknoll $ */
-
 /*****************************************************************************/
 
 #include "dng_image.h"
@@ -107,6 +100,19 @@ dng_image::dng_image (const dng_rect &bounds,
 		#endif
 		
 		ThrowBadFormat ();
+		
+		}
+
+	// Allow up to 2 * kMaxImageSide to deal with intermediate image objects
+	// (e.g., rotated and padded).
+
+	static const uint32 kLimit = 2 * kMaxImageSide;
+
+	if (bounds.W () > kLimit ||
+		bounds.H () > kLimit)
+		{
+		
+		ThrowBadFormat ("dng_image bounds too large");
 		
 		}
 		
@@ -748,11 +754,11 @@ void dng_image::Rotate (const dng_orientation &orientation)
 		
 /*****************************************************************************/
 
-void dng_image::CopyArea (const dng_image &src,
-						  const dng_rect &area,
-						  uint32 srcPlane,
-						  uint32 dstPlane,
-						  uint32 planes)
+void dng_image::DoCopyArea (const dng_image &src,
+						  	const dng_rect &area,
+						  	uint32 srcPlane,
+						  	uint32 dstPlane,
+						  	uint32 planes)
 	{
 
 	if (&src == this)
