@@ -11,6 +11,7 @@ file( GLOB INC_FILES "*.h" )
 include_directories( "../common/private" )
 include_directories( "../common/public" )
 include_directories( "../xmp_core/public/include" )
+include_directories( "../zlib" )
 
 # library
 add_library( ${LIB_NAME} STATIC ${SRC_FILES} ${INC_FILES} )
