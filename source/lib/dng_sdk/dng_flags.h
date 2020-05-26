@@ -19,16 +19,30 @@
 
 /*****************************************************************************/
 
-/// \def qMacOS 
-/// 1 if compiling for Mac OS X.
-
-/// \def qWinOS 
-/// 1 if compiling for Windows.
-
 // Make sure a platform is defined
 
-#if (defined(qMacOS) || defined(qWinOS) || defined(qAndroid) || defined(qiPhone) || defined(qLinux))
-#include "RawEnvironment.h"
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__) || defined(_WIN64)
+#define qWinOS 1
+#elif __APPLE__
+#include "TargetConditionals.h"
+#if TARGET_OS_IPHONE && TARGET_IPHONE_SIMULATOR
+#define qiPhoneSimulator 1
+#elif TARGET_OS_IPHONE
+#define qiPhone 1
+#else
+#define TARGET_OS_OSX 1
+#define qMacOS 1
+#endif
+#elif __ANDROID__
+#define qAndroid 1
+#elif __linux__ || __unix__ || __gnu_linux__ || linux
+#define qLinux 1
+#else
+#error "Unknown compiler"
+#endif
+
+#ifndef qDNGLittleEndian
+#define qDNGLittleEndian 1
 #endif
 
 // This requires a force include or compiler define.  These are the unique platforms.
