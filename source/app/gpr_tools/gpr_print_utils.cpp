@@ -27,8 +27,10 @@ using namespace std;
 #include "dng_stream.h"
 #include "dng_misc_opcodes.h"
 #include "dng_gain_map.h"
+#include "dng_host.h"
 
 uint32 spaces = 0;
+dng_host* dnghost = NULL;
 
 ostream& operator<<(ostream& output, const gpr_signed_rational& x)
 {
@@ -188,7 +190,7 @@ ostream& operator<<(ostream& output, const gpr_gain_map& x)
             
             AutoPtr<dng_gain_map> gain_map;
             
-            gain_map.Reset (dng_gain_map::GetStream (gain_map_stream, gDefaultDNGMemoryAllocator));
+            gain_map.Reset (dng_gain_map::GetStream (*dnghost, gain_map_stream));
             
             dng_point points = gain_map.Get()->Points();
             dng_point_real64 spacing = gain_map.Get()->Spacing();
@@ -526,6 +528,7 @@ int gpr_parameters_print( const gpr_parameters* parameters, const char* output_f
 {
     ofstream output;
     ostream* output_ref = &cout;
+	dnghost = new dng_host();
 
     if( output_file_path )
     {
@@ -536,6 +539,8 @@ int gpr_parameters_print( const gpr_parameters* parameters, const char* output_f
     start_tag( "", *output_ref );
     *output_ref << *parameters;
     end_tag( "", *output_ref );
+
+	delete dnghost;
     
     return 0;
 }
