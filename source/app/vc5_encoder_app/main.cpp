@@ -225,7 +225,7 @@ int main(int argc, char *argv[])
             static const char* hex = "0123456789ABCDEF";
             
             unsigned char digest[MD5_DIGEST_SIZE];
-            context_md5_t ctx;
+			MD5_CTX ctx;
             
             MD5Init(&ctx);
             MD5Update(&ctx, (unsigned char *)vc5_image.buffer, vc5_image.size );
