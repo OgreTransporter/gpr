@@ -1,16 +1,25 @@
-# library
-set( LIB_NAME cJSON )
+# base directory
+set(LIB_CJSON_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
-# get source files
-file( GLOB SRC_FILES "*.c" "*.cpp" )
+# source files
+set(LIB_CJSON_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/cJSON.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/cJSON_Utils.c
+  PARENT_SCOPE)
 
-# get include files
-file( GLOB INC_FILES "*.h" )
+# include files
+set(LIB_CJSON_INC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/cJSON.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/cJSON_Utils.h
+  PARENT_SCOPE)
 
-# library
-add_library( ${LIB_NAME} STATIC ${SRC_FILES} ${INC_FILES} )
+# include directories
+set(LIB_CJSON_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  PARENT_SCOPE)
 
-target_link_libraries( ${LIB_NAME} )
+# link
+set(LIB_CJSON_LIBRARIES PARENT_SCOPE)
 
-# set the folder where to place the projects
-set_target_properties( ${LIB_NAME} PROPERTIES FOLDER lib )
+# define
+set(LIB_CJSON_DEFINE PARENT_SCOPE)

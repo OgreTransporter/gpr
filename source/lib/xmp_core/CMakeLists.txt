@@ -1,32 +1,509 @@
-# library
-set( LIB_NAME xmp_core )
+# base directory
+set(LIB_XMP_CORE_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
-# get source files
-file( GLOB BASE_SRC_FILES "*.cpp" )
+# source files
+set(LIB_XMP_CORE_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/source/IConfigurable.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/source/IConfigurationManager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/source/IError.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/source/IErrorNotifier.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/source/IUTF8String.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IArrayNode.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IClientDOMParser.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IClientDOMSerializer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/ICompositeNode.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/ICoreConfigurationManager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/ICoreObjectFactory.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IDOMImplementationRegistry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IDOMParser.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IDOMSerializer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IMetadataConverterUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/INameSpacePrefixMap.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/INode.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/INodeIterator.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IPath.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IPathSegment.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/ISimpleNode.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/source/IStructureNode.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/IOUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/PerfUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/SafeStringAPIs.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/UnicodeConversions.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XIO.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XML_Node.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMPFiles_IO.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMP_LibUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMP_ProgressTracker.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/AutoSharedLock.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/ConfigurableImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/ConfigurationManagerImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/DefaultErrorNotifierImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/ErrorImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/ErrorNotifierWrapperImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IConfigurable_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IConfigurationManager_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IErrorNotifier_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IError_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IMemoryAllocator_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IUTF8StringComparator.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/IUTF8String_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/MD5.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/MemoryAllocatorWrapperImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/MemoryManagedObject.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/SharedMutexImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/SharedObjectImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/ThreadSafeImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/UTF8StringImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/source/XMPCommon.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ArrayNodeImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ClientDOMParserWrapperImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ClientDOMSerializerWrapperImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/CompositeNodeImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/CoreConfigurationManagerImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/CoreObjectFactoryImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/DOMImplementationRegistryImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/DOMParserImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/DOMSerializerImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ExpatAdapter.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IArrayNode_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ICompositeNode_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ICoreConfigurationManager_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ICoreObjectFactory_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IDOMImplementationRegistry_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IDOMParser_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IDOMSerializer_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IMetadataConverterUtils_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IMetadata_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/INameSpacePrefixMap_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/INodeIterator_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/INode_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IPathSegment_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IPath_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ISimpleNode_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/IStructureNode_I.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/MetadataConverterUtilsImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/MetadataImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/NameSpacePrefixMapImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/NodeImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/ParseRDF.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/PathImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/PathSegmentImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/RDFDOMParserImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/RDFDOMSerializerImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/SimpleNodeImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/StructureNodeImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/WXMPIterator.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/WXMPMeta.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/WXMPUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPCore_Impl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPIterator.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPIterator2.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta-GetSet.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta-Parse.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta-Serialize.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta2-GetSet.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPUtils-FileInfo.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPUtils2.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/AIFF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/ASF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/AVCHD_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/Basic_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/FLV_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/GIF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/InDesign_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/JPEG_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/MP3_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/MPEG2_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/MPEG4_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/P2_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/PNG_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/PostScript_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/PSD_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/RIFF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/Scanner_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/SonyHDV_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/SVG_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/SWF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/TIFF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/Trivial_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/UCF_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/WAVE_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAMEX_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAMFAM_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAMSAM_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAM_Handler.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/AIFF/AIFFBehavior.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/AIFF/AIFFMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/AIFF/AIFFReconcile.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/Chunk.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/ChunkController.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/ChunkPath.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/IChunkBehavior.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/BEXTMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/CartMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/Cr8rMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/DISPMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/INFOMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/iXMLMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/PrmLMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/WAVEBehavior.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/WAVEReconcile.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ASF_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ID3_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IPTC_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ISOBaseMedia_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/META_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/MOOV_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/P2_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PackageFormat_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PNG_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PostScript_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PSIR_FileWriter.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PSIR_MemoryReader.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/QuickTime_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ReconcileIPTC.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ReconcileLegacy.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ReconcileTIFF.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/Reconcile_Impl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/RIFF.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/RIFF_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/SVG_Adapter.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/SWF_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/TIFF_FileWriter.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/TIFF_MemoryReader.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/TIFF_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/TimeConversionUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/XDCAM_Support.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/XMPScanner.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/IMetadata.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/IReconcile.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/MetadataSet.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/FileHandlerInstance.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/HostAPIImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/Module.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/PluginManager.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/XMPAtoms.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/HandlerRegistry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/WXMPFiles.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/XMPFiles.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/XMPFiles_Impl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/HostAPIAccess.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginAPIImpl.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginBase.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginRegistry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginUtils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/PluginTemplate/source/Template_Handler.cpp
+)
+if(APPLE)
+  set(LIB_XMP_CORE_SRC_FILES
+    ${LIB_XMP_CORE_SRC_FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/Host_IO-POSIX.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/OS_Utils_Mac.cpp
+    PARENT_SCOPE)
+elseif(ANDROID)
+  set(LIB_XMP_CORE_SRC_FILES
+    ${LIB_XMP_CORE_SRC_FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/Host_IO-POSIX.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/OS_Utils_Android.cpp
+    PARENT_SCOPE)
+elseif(UNIX OR LINUX)
+  set(LIB_XMP_CORE_SRC_FILES
+    ${LIB_XMP_CORE_SRC_FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/Host_IO-POSIX.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/OS_Utils_Linux.cpp
+    PARENT_SCOPE)
+elseif(WIN32)
+  set(LIB_XMP_CORE_SRC_FILES
+    ${LIB_XMP_CORE_SRC_FILES}
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/Host_IO-Win.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/OS_Utils_WIN.cpp
+    PARENT_SCOPE)
+else()
+endif()
 
-# get include files
-file( GLOB BASE_INC_FILES "*.h" "public/include/*.h" "public/include/*.hpp" "public/include/client-glue/*.hpp" )
+# include files
+set(LIB_XMP_CORE_INC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/build/XMP_BuildInfo.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/client-glue/WXMPFiles.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/client-glue/WXMPIterator.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/client-glue/WXMPMeta.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/client-glue/WXMPUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/client-glue/WXMP_Common.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/BaseInterfaces/IConfigurable.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/BaseInterfaces/ISharedObject.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/BaseInterfaces/IThreadSafe.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/BaseInterfaces/IVersionable.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/IConfigurationManager.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/IError.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/IErrorNotifier.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/IMemoryAllocator.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/IObjectFactory.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Interfaces/IUTF8String.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Utilities/TWrapperFunctions.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/Utilities/TWrapperFunctions2.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/XMPCommonDefines.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/XMPCommonErrorCodes.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/XMPCommonFwdDeclarations.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCommon/XMPCommonLatestInterfaceVersions.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IArrayNode.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IClientDOMParser.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IClientDOMSerializer.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/ICompositeNode.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/ICoreConfigurationManager.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/ICoreObjectFactory.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IDOMImplementationRegistry.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IDOMParser.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IDOMSerializer.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IMetadataConverterUtils.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/INameSpacePrefixMap.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/INode.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/INodeIterator.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IPath.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IPathSegment.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/ISimpleNode.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/Interfaces/IStructureNode.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/XMPCoreDefines.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/XMPCoreErrorCodes.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/XMPCoreFwdDeclarations.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMPCore/XMPCoreLatestInterfaceVersions.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/TXMPFiles.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/TXMPIterator.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/TXMPMeta.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/TXMPUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMP.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMP_Const.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMP_Environment.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMP_IO.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include/XMP_Version.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/Endian.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/EndianUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/ExpatAdapter.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/Host_IO.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/IOUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/PerfUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/SafeStringAPIs.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/SafeTypes.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/SuppressSAL.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/UnicodeConversions.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XIO.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMLParserAdapter.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMPFiles_IO.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMP_LibUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/XMP_ProgressTracker.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/BaseClasses/MemoryManagedObject.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/BaseClasses/TSingleton.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/ConfigurableImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/ConfigurationManagerImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/DefaultErrorNotifierImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/ErrorImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/ErrorNotifierWrapperImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/MemoryAllocatorWrapperImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/SharedMutexImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/SharedObjectImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/ThreadSafeImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/ImplHeaders/UTF8StringImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/BaseInterfaces/IConfigurable_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/BaseInterfaces/ISharedObject_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/BaseInterfaces/IThreadSafe_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/IConfigurationManager_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/IErrorNotifier_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/IError_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/IMemoryAllocator_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/ISharedMutex.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Interfaces/IUTF8String_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/AutoSharedLock.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/IUTF8StringComparator.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/MD5.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TAllocator.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TAtomicTypes.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TSmartPointers_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TWrapperFunctions2_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TWrapperFunctions_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/UTF8String.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/XMPCommonDefines_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/XMPCommonErrorCodes_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/XMPCommonFwdDeclarations_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/XMPCommon_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/ArrayNodeImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/ClientDOMParserWrapperImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/ClientDOMSerializerWrapperImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/CompositeNodeImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/CoreConfigurationManagerImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/CoreObjectFactoryImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/DOMImplementationRegistryImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/DOMParserImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/DOMSerializerImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/MetadataConverterUtilsImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/MetadataImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/NameSpacePrefixMapImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/NodeImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/PathImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/PathSegmentImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/RDFDOMParserImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/RDFDOMSerializerImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/SimpleNodeImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/StructureNodeImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/ImplHeaders/TNodeIteratorImpl.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IArrayNode_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/ICompositeNode_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/ICoreConfigurationManager_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/ICoreObjectFactory_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IDOMImplementationRegistry_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IDOMParser_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IDOMSerializer_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IMetadataConverterUtils_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IMetadata_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/INameSpacePrefixMap_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/INodeIterator_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/INode_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IPathSegment_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IPath_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/ISimpleNode_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IStructureNode_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/Interfaces/IXMPLanguageAlternative_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPCore_Impl.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPIterator.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPIterator2.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPMeta2.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/source/XMPUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/XMPCoreDefines_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPCore/XMPCoreFwdDeclarations_I.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/AIFF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/ASF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/AVCHD_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/Basic_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/FLV_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/GIF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/InDesign_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/JPEG_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/MP3_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/MPEG2_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/MPEG4_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/P2_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/PNG_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/PostScript_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/PSD_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/RIFF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/Scanner_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/SonyHDV_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/SVG_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/SWF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/TIFF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/Trivial_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/UCF_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/WAVE_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAMEX_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAMFAM_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAMSAM_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FileHandlers/XDCAM_Handler.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/AIFF/AIFFBehavior.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/AIFF/AIFFMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/AIFF/AIFFReconcile.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/Chunk.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/ChunkController.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/ChunkPath.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/IChunkBehavior.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/IChunkContainer.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IFF/IChunkData.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/BEXTMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/CartMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/Cr8rMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/DISPMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/INFOMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/iXMLMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/PrmLMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/WAVEBehavior.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/WAVE/WAVEReconcile.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ASF_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ID3_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/IPTC_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ISOBaseMedia_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/MacScriptExtracts.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/META_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/MOOV_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/P2_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PackageFormat_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PNG_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PostScript_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/PSIR_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/QuickTime_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/ReconcileLegacy.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/Reconcile_Impl.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/RIFF.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/RIFF_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/SVG_Adapter.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/SWF_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/TIFF_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/TimeConversionUtils.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/XDCAM_Support.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/FormatSupport/XMPScanner.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/IMetadata.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/IReconcile.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/MetadataSet.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/NativeMetadataSupport/ValueObject.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/FileHandler.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/FileHandlerInstance.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/Module.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/ModuleUtils.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/PluginManager.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/PluginHandler/XMPAtoms.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/HandlerRegistry.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/XMPFiles.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFiles/source/XMPFiles_Impl.hpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/HostAPI.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/HostAPIAccess.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginBase.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginConst.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginHandler.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginRegistry.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source/PluginUtils.h
+)
+if(APPLE)
+  set(LIB_XMP_CORE_INC_FILES ${LIB_XMP_CORE_INC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TAtomicTypes_Mac.h PARENT_SCOPE)
+elseif(ANDROID)
+  set(LIB_XMP_CORE_INC_FILES ${LIB_XMP_CORE_INC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TAtomicTypes_Android.h PARENT_SCOPE)
+elseif(UNIX OR LINUX)
+  set(LIB_XMP_CORE_INC_FILES ${LIB_XMP_CORE_INC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TAtomicTypes_Linux.h PARENT_SCOPE)
+elseif(WIN32)
+  set(LIB_XMP_CORE_INC_FILES ${LIB_XMP_CORE_INC_FILES} ${CMAKE_CURRENT_SOURCE_DIR}/XMPCommon/Utilities/TAtomicTypes_Win.h PARENT_SCOPE)
+else()
+endif()
 
-# get all source files
-set( SRC_FILES ${BASE_SRC_FILES} )
+# include directories
+set(LIB_XMP_CORE_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/XMPFilesPlugins/api/source
+  PARENT_SCOPE)
 
-# get all include files
-set( INC_FILES ${BASE_INC_FILES} )
+# link
+set(LIB_XMP_CORE_LIBRARIES
+  PARENT_SCOPE)
 
-# add include files from other folders
-include_directories( "../md5_lib" )
-include_directories( "../expat_lib" )
-include_directories( "public/include" )
-
-# library
-add_library( ${LIB_NAME} STATIC ${SRC_FILES} ${INC_FILES} )
-
-# define compile time definitions
-target_compile_definitions( ${LIB_NAME} PUBLIC XML_STATIC=1 )
-
-SET(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libstdc++")
-
-target_link_libraries( ${LIB_NAME} )
-
-# set the folder where to place the projects
-set_target_properties( ${LIB_NAME} PROPERTIES FOLDER lib )
+# define
+set(LIB_XMP_CORE_DEFINE
+  ENABLE_CPP_DOM_MODEL=1
+  XMP_StaticBuild=1
+  BUILDING_XMPCORE_LIB=1
+  XMP_COMPONENT_INT_NAMESPACE=AdobeXMPCore_Int
+  BUILDING_XMPCORE_AS_STATIC=1
+)
+if(APPLE)
+  if(APPLE_IOS)
+    set(LIB_XMP_CORE_DEFINE ${LIB_XMP_CORE_DEFINE} IOS_ENV=1 PARENT_SCOPE)
+  else()
+    set(LIB_XMP_CORE_DEFINE ${LIB_XMP_CORE_DEFINE} MAC_ENV=1 PARENT_SCOPE)
+  endif()
+elseif(ANDROID)
+  set(LIB_XMP_CORE_DEFINE ${LIB_XMP_CORE_DEFINE} ANDROID_ENV=1 PARENT_SCOPE)
+elseif(UNIX OR LINUX)
+  set(LIB_XMP_CORE_DEFINE ${LIB_XMP_CORE_DEFINE} UNIX_ENV=1 PARENT_SCOPE)
+elseif(WIN32)
+  set(LIB_XMP_CORE_DEFINE ${LIB_XMP_CORE_DEFINE} WIN_ENV=1 PARENT_SCOPE)
+else()
+endif()

@@ -1,55 +1,42 @@
-# executable
-set( EXE_NAME gpr_tools )
+# base directory
+set(APP_GPR_TOOLS_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-# get source and include files
-file( GLOB GPRTOOLS_SRC_FILES "*.c" "*.cpp" )
-file( GLOB GPRTOOLS_INC_FILES "*.h" "../common/*.h" )
+# source files
+set(APP_GPR_TOOLS_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/gpr_parse_utils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/gpr_print_utils.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/main_c.c
+)
 
-# add include files from other folders
-include_directories( "../common" )
-include_directories( "../common/cJSON" )
-include_directories( "../common/argument_parser" )
-include_directories( "../common/TinyJPEG" )
-include_directories( "../../lib/common/public" )
-include_directories( "../../lib/vc5_common" )
+# include files
+set(APP_GPR_TOOLS_INC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/gpr_parse_utils.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/gpr_print_utils.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/main_c.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/stdcpp_utils.h
+)
 
-include_directories( "../../lib/md5_lib" )
-include_directories( "../../lib/dng_sdk" )
-include_directories( "../../lib/gpr_sdk/public" )
+# include directories
+set(APP_GPR_TOOLS_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-  include_directories( "../../lib/tiny_jpeg" )
-  add_definitions("-DGPR_JPEG_AVAILABLE=1")  
-else(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-  add_definitions("-DGPR_JPEG_AVAILABLE=0")
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
+# link
+set(APP_GPR_TOOLS_LIBRARIES gpr)
+
+# define
+set(APP_GPR_TOOLS_DEFINE)
 
 # add executable
-add_executable( ${EXE_NAME} ${GPRTOOLS_SRC_FILES} ${GPRTOOLS_INC_FILES} )
+set(SRC ${APP_GPR_TOOLS_SRC_FILES} ${LIB_ARGUMENT_PARSER_SRC_FILES} ${LIB_CJSON_SRC_FILES})
+set(HDR ${APP_GPR_TOOLS_INC_FILES} ${LIB_ARGUMENT_PARSER_INC_FILES} ${LIB_CJSON_INC_FILES})
+set(LIB ${APP_GPR_TOOLS_LIBRARIES} ${LIB_ARGUMENT_PARSER_LIBRARIES} ${LIB_CJSON_LIBRARIES})
+set(DEF ${APP_GPR_TOOLS_DEFINE} ${LIB_ARGUMENT_PARSER_DEFINE} ${LIB_CJSON_DEFINE} ${LIB_GPR_DEFINE})
+set(INC ${APP_GPR_TOOLS_INCLUDE_DIRS} ${LIB_ARGUMENT_PARSER_INCLUDE_DIRS} ${LIB_CJSON_INCLUDE_DIRS} ${LIB_GPR_INCLUDE_DIRS} ${LIB_COMMON_INCLUDE_DIRS} ${LIB_DNG_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../common ${LIB_TJPG_INCLUDE_DIRS})
 
-# Linked libraries
-target_link_libraries( ${EXE_NAME} gpr_sdk )
-
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-  target_link_libraries( ${EXE_NAME} tiny_jpeg )
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-
-target_link_libraries( ${EXE_NAME} dng_sdk xmp_core zlib )
-
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_decoder")
-  target_link_libraries( ${EXE_NAME} vc5_decoder )
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_decoder")
-
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_encoder")
-  target_link_libraries( ${EXE_NAME} vc5_encoder )
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_encoder")
-
-target_link_libraries( ${EXE_NAME} vc5_common common md5_lib expat_lib cJSON argument_parser )
-
-# In order to use Carbon API, define qEnableCarbon in gpr_platform.h and uncomment code below 
-# if (APPLE)
-#	target_link_libraries( ${EXE_NAME} "-framework Carbon" )
-# endif (APPLE)
-
-# set the folder where to place the projects
-set_target_properties( ${EXE_NAME}  PROPERTIES FOLDER app )
+add_executable(gpr_tools ${SRC} ${HDR})
+target_link_libraries(gpr_tools ${LIB})
+target_compile_definitions(gpr_tools PRIVATE ${DEF})
+target_include_directories(gpr_tools PRIVATE ${INC})
+install(TARGETS gpr_tools)

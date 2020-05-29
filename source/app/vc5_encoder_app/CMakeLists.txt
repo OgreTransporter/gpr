@@ -1,25 +1,37 @@
-# executable
-set( EXE_NAME vc5_encoder_app )
+# base directory
+set(APP_VC5_ENCODER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
-# get source and include files
-file( GLOB ENCODER_SRC_FILES "*.c" "*.cpp" )
-file( GLOB ENCODER_INC_FILES "*.h" "../common/*.h" )
+# source files
+set(APP_VC5_ENCODER_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+  ${LIB_XMP_CORE_BASE_DIR}/XMPCommon/source/MD5.cpp
+)
 
-# add include files from other folders
-include_directories( "../common" )
-include_directories( "../common/argument_parser" )
-include_directories( "../../lib/common/private" )
-include_directories( "../../lib/common/public" )
-include_directories( "../../lib/vc5_common" )
-include_directories( "../../lib/vc5_encoder" )
-include_directories( "../../lib/md5_lib" )
+# include files
+set(APP_VC5_ENCODER_INC_FILES ${LIB_XMP_CORE_BASE_DIR}/XMPCommon/Utilities/MD5.h)
 
-add_definitions("-DGPR_WRITING=1")
+# include directories
+set(APP_VC5_ENCODER_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${LIB_XMP_CORE_BASE_DIR}
+  ${LIB_XMP_CORE_BASE_DIR}/XMPCommon/Utilities
+)
+
+# link
+set(APP_VC5_ENCODER_LIBRARIES)
+
+# define
+set(APP_VC5_ENCODER_DEFINE ${LIB_XMP_CORE_DEFINE})
 
 # add executable
-add_executable( ${EXE_NAME} ${ENCODER_SRC_FILES} ${ENCODER_INC_FILES} ${COMMON_SRC_FILES} ${COMMON_INC_FILES} )
+set(SRC ${APP_VC5_ENCODER_SRC_FILES} ${LIB_VC5_COMMON_SRC_FILES} ${LIB_VC5_ENCODER_SRC_FILES} ${LIB_ARGUMENT_PARSER_SRC_FILES} ${LIB_COMMON_SRC_FILES})
+set(HDR ${APP_VC5_ENCODER_INC_FILES} ${LIB_VC5_COMMON_INC_FILES} ${LIB_VC5_ENCODER_INC_FILES} ${LIB_ARGUMENT_PARSER_INC_FILES} ${LIB_COMMON_INC_FILES})
+set(LIB ${APP_VC5_ENCODER_LIBRARIES} ${LIB_VC5_COMMON_LIBRARIES} ${LIB_VC5_ENCODER_LIBRARIES} ${LIB_ARGUMENT_PARSER_LIBRARIES} ${LIB_COMMON_LIBRARIES})
+set(DEF ${APP_VC5_ENCODER_DEFINE} ${LIB_VC5_COMMON_DEFINE} ${LIB_VC5_ENCODER_DEFINE} ${LIB_ARGUMENT_PARSER_DEFINE} ${LIB_COMMON_DEFINE})
+set(INC ${APP_VC5_ENCODER_INCLUDE_DIRS} ${LIB_VC5_COMMON_INCLUDE_DIRS} ${LIB_VC5_ENCODER_INCLUDE_DIRS} ${LIB_ARGUMENT_PARSER_INCLUDE_DIRS} ${LIB_COMMON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../common)
 
-target_link_libraries( ${EXE_NAME} vc5_encoder vc5_common common md5_lib argument_parser )
-
-# set the folder where to place the projects
-set_target_properties( ${EXE_NAME}  PROPERTIES FOLDER app )
+add_executable(vc5_encoder ${SRC} ${HDR})
+target_link_libraries(vc5_encoder ${LIB})
+target_compile_definitions(vc5_encoder PRIVATE ${DEF})
+target_include_directories(vc5_encoder PRIVATE ${INC})
+install(TARGETS vc5_encoder)

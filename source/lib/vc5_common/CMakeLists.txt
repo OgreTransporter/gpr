@@ -1,20 +1,48 @@
-# library
-set( LIB_NAME vc5_common )
+# base directory
+set(LIB_VC5_COMMON_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
-# get source files
-file( GLOB SRC_FILES "*.c" )
+# source files
+set(LIB_VC5_COMMON_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/bitstream.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/codec.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/companding.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/image.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/logcurve.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/stream.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/syntax.c
+  #${CMAKE_CURRENT_SOURCE_DIR}/table17.inc
+  ${CMAKE_CURRENT_SOURCE_DIR}/utilities.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/wavelet.c
+  PARENT_SCOPE)
 
-# get include files
-file( GLOB INC_FILES "*.h" )
+# include files
+set(LIB_VC5_COMMON_INC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/bitstream.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/codec.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/codeset.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/common.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/companding.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/config.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/error.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/image.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/logcurve.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/pixel.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/stream.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/syntax.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/types.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/unique.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/utilities.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/vc5_common.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/wavelet.h
+  PARENT_SCOPE)
 
-# add include files from other folders
-include_directories( "../common/private" )
-include_directories( "../common/public" )
+# include directories
+set(LIB_VC5_COMMON_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  PARENT_SCOPE)
 
-# library
-add_library( ${LIB_NAME} STATIC ${SRC_FILES} ${INC_FILES} )
+# link
+set(LIB_VC5_COMMON_LIBRARIES PARENT_SCOPE)
 
-target_link_libraries( ${LIB_NAME} )
-
-# set the folder where to place the projects
-set_target_properties( ${LIB_NAME} PROPERTIES FOLDER lib )
+# define
+set(LIB_VC5_COMMON_DEFINE PARENT_SCOPE)

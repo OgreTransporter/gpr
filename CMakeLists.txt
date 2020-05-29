@@ -1,78 +1,64 @@
-# minimum required cmake version
+cmake_policy(SET CMP0048 NEW)
 cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
+project(gpr VERSION 1.1.0 LANGUAGES C CXX)
 
-set(CMAKE_SUPPRESS_REGENERATION true)
+set(CMAKE_C_STANDARD 99)
+SET(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LIBRARY "libstdc++")
 
-set(CMAKE_C_FLAGS "-std=c99")
-
-# project name
-project( gpr )
-
+set(GIT_BRANCH "")
+set(GIT_COMMIT_HASH "")
 if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
-  execute_process(
-    COMMAND git rev-parse --abbrev-ref HEAD
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_BRANCH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-
-  execute_process(
-    COMMAND git log -1 --format=%h
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE GIT_COMMIT_HASH
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-  )
-else(EXISTS "${CMAKE_SOURCE_DIR}/.git")
-  set(GIT_BRANCH "")
-  set(GIT_COMMIT_HASH "")
-endif(EXISTS "${CMAKE_SOURCE_DIR}/.git")
-
+  find_package(Git)
+  if(GIT_FOUND)
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} rev-parse --abbrev-ref HEAD
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      OUTPUT_VARIABLE GIT_BRANCH
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} log -1 --format=%h
+      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+      OUTPUT_VARIABLE GIT_COMMIT_HASH
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+  endif()
+endif()
 message(STATUS "Git current branch: ${GIT_BRANCH}")
 message(STATUS "Git commit hash: ${GIT_COMMIT_HASH}")
 
 add_definitions("-DGIT_COMMIT_HASH=\"${GIT_COMMIT_HASH}\"")
 add_definitions("-DGIT_BRANCH=\"${GIT_BRANCH}\"")
+if(MSVC)
+  add_definitions("-D_CRT_SECURE_NO_DEPRECATE")
+  add_definitions("-D_CRT_NONSTDC_NO_DEPRECATE")
+endif()
+if(WIN32)
+  add_definitions("-DUNICODE")
+  add_definitions("-D_UNICODE")
+  if(NOT CMAKE_DEBUG_POSTFIX)
+    set(CMAKE_DEBUG_POSTFIX "d")
+  endif()
+endif()
 
 # add needed subdirectories
 add_subdirectory( "source/lib/common" )
 add_subdirectory( "source/lib/vc5_common" )
-
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_decoder")
-  MESSAGE( STATUS "Found source/lib/vc5_decoder - enabling vc5 decoder and setting GPR_READING=1" )
-  add_subdirectory( "source/lib/vc5_decoder" )
-  add_subdirectory( "source/app/vc5_decoder_app" )
-  add_definitions("-DGPR_READING=1")
-else(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_decoder")
-  MESSAGE( STATUS "Could not find source/lib/vc5_decoder - disabling vc5 decoder and setting GPR_READING=0" )
-  add_definitions("-DGPR_READING=0")
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_decoder")
-
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_encoder")
-  MESSAGE( STATUS "Found source/lib/vc5_encoder - enabling vc5 encoder and setting GPR_WRITING=1" )
-  add_subdirectory( "source/lib/vc5_encoder" )
-  add_subdirectory( "source/app/vc5_encoder_app" )
-  add_definitions("-DGPR_WRITING=1")
-else(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_encoder")
-  MESSAGE( STATUS "Could not find source/lib/vc5_encoder - disabling vc5 encoder and setting GPR_WRITING=0" )
-  add_definitions("-DGPR_WRITING=0")
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/vc5_encoder")
-
+add_subdirectory( "source/lib/vc5_decoder" )
+add_subdirectory( "source/lib/vc5_encoder" )
 add_subdirectory( "source/lib/dng_sdk" )
-add_subdirectory( "source/lib/gpr_sdk" )
 add_subdirectory( "source/lib/xmp_core" )
 add_subdirectory( "source/lib/expat_lib" )
-add_subdirectory( "source/lib/md5_lib" )
 add_subdirectory( "source/lib/zlib" )
-
-if(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-  MESSAGE( STATUS "Found source/lib/tiny_jpeg - enabling jpeg writing and setting GPR_JPEG_AVAILABLE=1" )
-  add_subdirectory( "source/lib/tiny_jpeg" )
-  add_definitions("-DGPR_JPEG_AVAILABLE=1")
-else(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-  MESSAGE( STATUS "Could not find source/lib/tiny_jpeg - disabling jpeg writing and setting GPR_JPEG_AVAILABLE=0" )
-  add_definitions("-DGPR_JPEG_AVAILABLE=0")
-endif(EXISTS "${CMAKE_SOURCE_DIR}/source/lib/tiny_jpeg")
-
+add_subdirectory( "source/lib/tiny_jpeg" )
 add_subdirectory( "source/app/common/cJSON" )
 add_subdirectory( "source/app/common/argument_parser" )
+
+add_subdirectory( "source/lib/gpr_sdk" )
 add_subdirectory( "source/app/gpr_tools" )
+if(${GPR_ENABLE_VC5_DECODER})
+  add_subdirectory( "source/app/vc5_decoder_app" )
+endif()
+if(${GPR_ENABLE_VC5_ENCODER})
+  add_subdirectory( "source/app/vc5_encoder_app" )
+endif()

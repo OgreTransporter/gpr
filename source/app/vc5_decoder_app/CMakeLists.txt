@@ -1,25 +1,32 @@
-# executable
-set( EXE_NAME vc5_decoder_app )
+# base directory
+set(APP_VC5_DECODER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
-# get source and include files
-file( GLOB DECODER_SRC_FILES "*.c" "*.cpp" )
-file( GLOB DECODER_INC_FILES "*.h" "../common/*.h" )
+# source files
+set(APP_VC5_DECODER_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+)
 
-# add include files from other folders
-include_directories( "../common" )
-include_directories( "../common/argument_parser" )
-include_directories( "../../lib/common/private" )
-include_directories( "../../lib/common/public" )
-include_directories( "../../lib/vc5_common" )
-include_directories( "../../lib/vc5_decoder" )
-include_directories( "../../lib/md5_lib" )
+# include files
+set(APP_VC5_DECODER_INC_FILES)
 
-add_definitions("-DGPR_READING=1")
+# include directories
+set(APP_VC5_DECODER_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
+
+# link
+set(APP_VC5_DECODER_LIBRARIES)
+
+# define
+set(APP_VC5_DECODER_DEFINE)
 
 # add executable
-add_executable( ${EXE_NAME} ${DECODER_SRC_FILES} ${DECODER_INC_FILES} ${COMMON_SRC_FILES} ${COMMON_INC_FILES} )
+set(SRC ${APP_VC5_DECODER_SRC_FILES} ${LIB_VC5_COMMON_SRC_FILES} ${LIB_VC5_DECODER_SRC_FILES} ${LIB_ARGUMENT_PARSER_SRC_FILES} ${LIB_COMMON_SRC_FILES})
+set(HDR ${APP_VC5_DECODER_INC_FILES} ${LIB_VC5_COMMON_INC_FILES} ${LIB_VC5_DECODER_INC_FILES} ${LIB_ARGUMENT_PARSER_INC_FILES} ${LIB_COMMON_INC_FILES})
+set(LIB ${APP_VC5_DECODER_LIBRARIES} ${LIB_VC5_COMMON_LIBRARIES} ${LIB_VC5_DECODER_LIBRARIES} ${LIB_ARGUMENT_PARSER_LIBRARIES} ${LIB_COMMON_LIBRARIES})
+set(DEF ${APP_VC5_DECODER_DEFINE} ${LIB_VC5_COMMON_DEFINE} ${LIB_VC5_DECODER_DEFINE} ${LIB_ARGUMENT_PARSER_DEFINE} ${LIB_COMMON_DEFINE})
+set(INC ${APP_VC5_DECODER_INCLUDE_DIRS} ${LIB_VC5_COMMON_INCLUDE_DIRS} ${LIB_VC5_DECODER_INCLUDE_DIRS} ${LIB_ARGUMENT_PARSER_INCLUDE_DIRS} ${LIB_COMMON_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR}/../common)
 
-target_link_libraries( ${EXE_NAME} vc5_decoder vc5_common common md5_lib argument_parser )
-
-# set the folder where to place the projects
-set_target_properties( ${EXE_NAME}  PROPERTIES FOLDER app )
+add_executable(vc5_decoder ${SRC} ${HDR})
+target_link_libraries(vc5_decoder ${LIB})
+target_compile_definitions(vc5_decoder PRIVATE ${DEF})
+target_include_directories(vc5_decoder PRIVATE ${INC})
+install(TARGETS vc5_decoder)

@@ -1,23 +1,61 @@
-# library
-set( LIB_NAME gpr_sdk )
+# base directory
+set(LIB_GPR_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-# get source files
-file( GLOB SRC_FILES "private/*.cpp" "public/*.cpp" )
+# source files
+set(LIB_GPR_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_exif_info.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_image_writer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_profile_info.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_read_image.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_tuning_info.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_utils.cpp
+)
 
-# get include files
-file( GLOB INC_FILES "private/*.h" "public/*.h" )
+# include files
+set(LIB_GPR_INC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_image_writer.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_read_image.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_utils.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_exif_info.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_profile_info.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_tuning_info.h
+)
 
-# add include files from other folders
-include_directories( "./public" )
-include_directories( "../common/private" )
-include_directories( "../common/public" )
-include_directories( "../dng_sdk" )
-include_directories( "../vc5_common" )
+# include directories
+set(LIB_GPR_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/public
+)
 
-# library
-add_library( ${LIB_NAME} STATIC ${SRC_FILES} ${INC_FILES} )
+# link
+set(LIB_GPR_LIBRARIES
+)
 
-target_link_libraries( ${LIB_NAME} )
+# define
+set(LIB_GPR_DEFINE
+)
 
-# set the folder where to place the projects
-set_target_properties( ${LIB_NAME} PROPERTIES FOLDER lib )
+set(SRC ${LIB_GPR_SRC_FILES} ${LIB_COMMON_SRC_FILES} ${LIB_DNG_SRC_FILES} ${LIB_EXPAT_SRC_FILES} ${LIB_TJPG_SRC_FILES} ${LIB_VC5_COMMON_SRC_FILES} ${LIB_VC5_DECODER_SRC_FILES} ${LIB_VC5_ENCODER_SRC_FILES} ${LIB_XMP_CORE_SRC_FILES} ${LIB_ZLIB_SRC_FILES})
+set(HDR ${LIB_GPR_INC_FILES} ${LIB_COMMON_INC_FILES} ${LIB_DNG_INC_FILES} ${LIB_EXPAT_INC_FILES} ${LIB_TJPG_INC_FILES} ${LIB_VC5_COMMON_INC_FILES} ${LIB_VC5_DECODER_INC_FILES} ${LIB_VC5_ENCODER_INC_FILES} ${LIB_XMP_CORE_INC_FILES} ${LIB_ZLIB_INC_FILES})
+set(LIB ${LIB_GPR_LIBRARIES} ${LIB_COMMON_LIBRARIES} ${LIB_DNG_LIBRARIES} ${LIB_EXPAT_LIBRARIES} ${LIB_TJPG_LIBRARIES} ${LIB_VC5_COMMON_LIBRARIES} ${LIB_VC5_DECODER_LIBRARIES} ${LIB_VC5_ENCODER_LIBRARIES} ${LIB_XMP_CORE_LIBRARIES} ${LIB_ZLIB_LIBRARIES})
+set(DEF ${LIB_GPR_DEFINE} ${LIB_COMMON_DEFINE} ${LIB_DNG_DEFINE} ${LIB_EXPAT_DEFINE} ${LIB_TJPG_DEFINE} ${LIB_VC5_COMMON_DEFINE} ${LIB_VC5_DECODER_DEFINE} ${LIB_VC5_ENCODER_DEFINE} ${LIB_XMP_CORE_DEFINE} ${LIB_ZLIB_DEFINE})
+set(INC ${LIB_GPR_INCLUDE_DIRS} ${LIB_COMMON_INCLUDE_DIRS} ${LIB_DNG_INCLUDE_DIRS} ${LIB_EXPAT_INCLUDE_DIRS} ${LIB_TJPG_INCLUDE_DIRS} ${LIB_VC5_COMMON_INCLUDE_DIRS} ${LIB_VC5_DECODER_INCLUDE_DIRS} ${LIB_VC5_ENCODER_INCLUDE_DIRS} ${LIB_XMP_CORE_INCLUDE_DIRS} ${LIB_ZLIB_INCLUDE_DIRS})
+
+add_library(gpr STATIC ${SRC} ${HDR})
+target_link_libraries(gpr ${LIB})
+target_compile_definitions(gpr PRIVATE ${DEF})
+target_include_directories(gpr PRIVATE ${INC})
+
+set(LIB_GPR_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}/public
+  PARENT_SCOPE)
+
+install(TARGETS gpr)
+install(FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_exif_info.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_profile_info.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_tuning_info.h
+  DESTINATION include/gpr)

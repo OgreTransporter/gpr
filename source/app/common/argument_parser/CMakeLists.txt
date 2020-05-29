@@ -1,16 +1,25 @@
-# library
-set( LIB_NAME argument_parser )
+# base directory
+set(LIB_ARGUMENT_PARSER_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR} PARENT_SCOPE)
 
-# get source files
-file( GLOB SRC_FILES "*.c" "*.cpp" )
+# source files
+set(LIB_ARGUMENT_PARSER_SRC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/argument_parser.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/program_options_lite.cpp
+  PARENT_SCOPE)
 
-# get include files
-file( GLOB INC_FILES "*.h" )
+# include files
+set(LIB_ARGUMENT_PARSER_INC_FILES
+  ${CMAKE_CURRENT_SOURCE_DIR}/argument_parser.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/program_options_lite.h
+  PARENT_SCOPE)
 
-# library
-add_library( ${LIB_NAME} STATIC ${SRC_FILES} ${INC_FILES} )
+# include directories
+set(LIB_ARGUMENT_PARSER_INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  PARENT_SCOPE)
 
-target_link_libraries( ${LIB_NAME} )
+# link
+set(LIB_ARGUMENT_PARSER_LIBRARIES PARENT_SCOPE)
 
-# set the folder where to place the projects
-set_target_properties( ${LIB_NAME} PROPERTIES FOLDER lib )
+# define
+set(LIB_ARGUMENT_PARSER_DEFINE PARENT_SCOPE)
