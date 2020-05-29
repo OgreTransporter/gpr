@@ -2,11 +2,13 @@
 #define __WXMPMeta_hpp__ 1
 
 // =================================================================================================
-// Copyright 2002 Adobe Systems Incorporated
+// Copyright 2002 Adobe
 // All Rights Reserved.
 //
 // NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the terms
-// of the Adobe license agreement accompanying it.
+// of the Adobe license agreement accompanying it. If you have received this file from a source other 
+// than Adobe, then your use, modification, or distribution of it requires the prior written permission
+// of Adobe.
 // =================================================================================================
 
 #include "client-glue/WXMP_Common.hpp"
@@ -17,7 +19,7 @@ extern "C" {
 
 // =================================================================================================
 
-static XMP_Bool WrapErrorNotify ( XMPMeta_ErrorCallbackProc proc, void * context,
+static inline XMP_Bool WrapErrorNotify ( XMPMeta_ErrorCallbackProc proc, void * context,
 							  XMP_ErrorSeverity severity, XMP_Int32 cause, XMP_StringPtr message )
 {
 	bool ok;
@@ -51,6 +53,8 @@ static XMP_Bool WrapErrorNotify ( XMPMeta_ErrorCallbackProc proc, void * context
 #define zXMPMeta_DumpNamespaces_1(outProc,refCon) \
     WXMPMeta_DumpNamespaces_1 ( outProc, refCon, &wResult )
 
+#define zXMPMeta_Use_CPP_DOM_APIs_1(useNewCoreAPIs) \
+	WXMPMeta_Use_CPP_DOM_APIs_1( useNewCoreAPIs, &wResult )
 #define zXMPMeta_RegisterNamespace_1(namespaceURI,suggestedPrefix,actualPrefix,SetClientString) \
     WXMPMeta_RegisterNamespace_1 ( namespaceURI, suggestedPrefix, actualPrefix, SetClientString, &wResult )
 
@@ -62,6 +66,9 @@ static XMP_Bool WrapErrorNotify ( XMPMeta_ErrorCallbackProc proc, void * context
 
 #define zXMPMeta_DeleteNamespace_1(namespaceURI) \
     WXMPMeta_DeleteNamespace_1 ( namespaceURI, &wResult )
+
+#define zXMPMeta_GetIXMPMetadata_1() \
+	WXMPMeta_GetIXMPMetadata_1( this->xmpRef, &wResult )
 
 #define zXMPMeta_GetProperty_1(schemaNS,propName,propValue,options,SetClientString) \
     WXMPMeta_GetProperty_1 ( this->xmpRef, schemaNS, propName, propValue, options, SetClientString, &wResult )
@@ -231,6 +238,10 @@ XMP_PUBLIC WXMPMeta_DumpNamespaces_1 ( XMP_TextOutputProc outProc,
                             void *             refCon,
                             WXMP_Result *      wResult );
 
+extern void
+XMP_PUBLIC WXMPMeta_Use_CPP_DOM_APIs_1( XMP_Bool useNewCoreAPIs,
+										WXMP_Result * wResult );
+
 // -------------------------------------------------------------------------------------------------
 
 extern void
@@ -257,6 +268,11 @@ XMP_PUBLIC WXMPMeta_DeleteNamespace_1 ( XMP_StringPtr namespaceURI,
                              WXMP_Result * wResult );
 
 // -------------------------------------------------------------------------------------------------
+
+extern void
+XMP_PUBLIC WXMPMeta_GetIXMPMetadata_1(XMPMetaRef	  xmpObjRef,
+WXMP_Result *  wResult );
+
 
 extern void
 XMP_PUBLIC WXMPMeta_GetProperty_1 ( XMPMetaRef       xmpRef,

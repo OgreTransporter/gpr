@@ -5,13 +5,20 @@
     #error "Do not directly include, use XMP.hpp"
 #endif
 
+#include "XMPCore/XMPCoreDefines.h"
+#if ENABLE_CPP_DOM_MODEL
+	#include "XMPCore/XMPCoreFwdDeclarations.h"
+#endif
+
 // =================================================================================================
-// ADOBE SYSTEMS INCORPORATED
-// Copyright 2002 Adobe Systems Incorporated
+// Copyright Adobe
+// Copyright 2002 Adobe
 // All Rights Reserved
 //
 // NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the terms
-// of the Adobe license agreement accompanying it.
+// of the Adobe license agreement accompanying it. If you have received this file from a source other 
+// than Adobe, then your use, modification, or distribution of it requires the prior written permission
+// of Adobe.
 // =================================================================================================
 
 // =================================================================================================
@@ -110,8 +117,6 @@ public:
     /// @brief Default constructor, creates an empty object.
     ///
     /// The default constructor creates a new empty \c TXMPMeta object.
-    ///
-    /// @return The new object. */
     TXMPMeta();
 
     // ---------------------------------------------------------------------------------------------
@@ -120,9 +125,8 @@ public:
     /// The copy constructor creates a new \c TXMPMeta object that refers to the same internal XMP
     /// object. as an existing \c TXMPMeta object.
     ///
-    /// @param original The object to copy.
+    /// @param original The object to copy. new object is returned via Original only.
     ///
-    /// @return The new object. */
 
     TXMPMeta ( const TXMPMeta<tStringObj> & original );
 
@@ -141,9 +145,9 @@ public:
     /// of an existing \c TXMPMeta object. Use to safely pass XMP objects across DLL boundaries.
     ///
     /// @param xmpRef The underlying reference object, obtained from some other XMP object with
-    /// \c TXMPMeta::GetInternalRef().
+    /// \c TXMPMeta::GetInternalRef().returns The new object.
     ///
-    /// @return The new object.
+    ///
 
     TXMPMeta ( XMPMetaRef xmpRef );
 
@@ -163,7 +167,7 @@ public:
     ///
     /// @param xmpSize  The length in bytes of the buffer.
     ///
-    /// @return The new object.
+    
 
     TXMPMeta ( XMP_StringPtr buffer,
                XMP_StringLen xmpSize );
@@ -1725,7 +1729,7 @@ public:
 	
 	//  --------------------------------------------------------------------------------------------
 	/// @brief ResetErrorCallbackLimit() resets the error notification limit and counting. It has no
-	/// effect if an error notification callback function is not registered. 
+	///        effect if an error notification callback function is not registered. 
 	///
 	/// @param limit A limit on the number of notifications to be delivered.
 	
