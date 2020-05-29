@@ -19,13 +19,13 @@
 #define MAX_ARGC 100
 
 #include "program_options_lite.h"
+#include <vector>
 
 class argument_parser
 {
 private:    
-    char*   application_path;
-    int     argument_count;
-    char*   arguments[MAX_ARGC];
+    std::string              application_path;
+	std::vector<std::string> arguments;
     
 protected:
     program_options_lite::Options command_options;
@@ -33,10 +33,10 @@ protected:
 public:
     argument_parser(bool verbose = true);
 
-    const int   get_argument_count() { return argument_count; }
-    const char* get_argument(int index) { return arguments[index]; }
+    const int   get_argument_count() { return (const int)arguments.size(); }
+    const char* get_argument(int index) { return arguments[index].c_str(); }
     
-    const char* get_application_path() { return application_path; }
+    const char* get_application_path() { return application_path.c_str(); }
 
     virtual int parse(int argc, char *argv [], const char* application_text = NULL, const char* prefix_text = NULL );
     

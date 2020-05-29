@@ -44,6 +44,14 @@ using namespace std;
 #define OPERATING_SYSTEM        "[Unknown-OS]"
 #endif
 
+#ifdef _WIN32
+#define PATH_SEPERATOR '\\'
+#define PATH_ZERO 0
+#else
+#define PATH_SEPERATOR '/'
+#define PATH_ZERO 1
+#endif
+
 #define NUMBER_OF_BITS "[%d bit] ", (sizeof(void*) == 8 ? 64 : 32) ///< used for checking 64-bit O/S
 
 argument_parser::argument_parser(bool verbose)
@@ -56,16 +64,25 @@ void argument_parser::set_options()
 
 int argument_parser::parse(int argc, char *argv [], const char* application_text, const char* prefix_text)
 {
-    argument_count = argc;
-    
-    for (int i = 0; i < argument_count; i++)
+	arguments.resize(argc);
+    for (int i = 0; i < argc; i++)
         arguments[i] = argv[i];
+
+	application_path = argv[0];
+	for (int i = application_path.length() - 1; i > 0; i--)
+	{
+		if (application_path[i] == PATH_SEPERATOR)
+		{
+			application_path.resize(i + PATH_ZERO);
+			break;
+		}
+	}
     
     set_options();
     
     program_options_lite::setDefaults(command_options);
     
-    const list<const char*>& argv_unhandled = program_options_lite::scanArgv(command_options, argument_count, (const char**) arguments);
+    const list<const char*>& argv_unhandled = program_options_lite::scanArgv(command_options, argc, (const char**)argv);
     
     for (list<const char*>::const_iterator it = argv_unhandled.begin(); it != argv_unhandled.end(); it++)
     {
@@ -85,7 +102,7 @@ int argument_parser::parse(int argc, char *argv [], const char* application_text
             fprintf( stderr, "\n" );
         }
         
-        printf("Executable: %s \n", get_application_path() );
+        printf("Executable: %s \n", get_argument(0) );
         printf("Arguments: ");
         
         for (int i = 1; i < get_argument_count(); i++)
