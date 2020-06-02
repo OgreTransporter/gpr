@@ -62,3 +62,5 @@ endif()
 if(${GPR_ENABLE_VC5_ENCODER})
   add_subdirectory( "source/app/vc5_encoder_app" )
 endif()
+
+add_subdirectory( "test" )
