@@ -29,7 +29,13 @@ if(GPR_SYSTEM_EXPAT)
     PARENT_SCOPE)
   
   # define
-  set(LIB_EXPAT_DEFINE PARENT_SCOPE)
+  if(EXPAT_STATIC)
+    set(LIB_EXPAT_DEFINE
+      XML_STATIC=1
+      PARENT_SCOPE)
+  else()
+    set(LIB_EXPAT_DEFINE PARENT_SCOPE)
+  endif()
 else()
   message(STATUS "Use the bundled source code for EXPAT library")
   # base directory
