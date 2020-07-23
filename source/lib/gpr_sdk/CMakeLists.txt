@@ -58,4 +58,5 @@ install(FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_exif_info.h
   ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_profile_info.h
   ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_tuning_info.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_read_image.h
   DESTINATION include/gpr)

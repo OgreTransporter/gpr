@@ -41,4 +41,6 @@ install(FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_buffer.h
   ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_platform.h
   ${CMAKE_CURRENT_SOURCE_DIR}/public/gpr_rgb_buffer.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/gpr_buffer_auto.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/private/stdc_includes.h
   DESTINATION include/gpr)
