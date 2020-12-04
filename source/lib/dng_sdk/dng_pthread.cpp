@@ -392,7 +392,11 @@ int dng_pthread_create(dng_pthread_t *thread, const pthread_attr_t *attrs, void 
 #endif
 
 			std::pair<DWORD, std::pair<HANDLE, void **> > newMapEntry(threadID,
+#if __GNUC__ > 3
+																	 std::pair<HANDLE, void **>((HANDLE)result, resultHolder.Get ()));
+#else
 																	 std::pair<HANDLE, void **>((HANDLE)result, resultHolder.get ()));
+#endif
 			std::pair<ThreadMapType::iterator, bool> insertion = primaryHandleMap.insert(newMapEntry);
 
 			// If there is a handle open on the thread, its ID should not be reused so assert that an insertion was made.
