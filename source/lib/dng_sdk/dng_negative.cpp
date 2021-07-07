@@ -2881,7 +2881,7 @@ void dng_negative::SetFujiMosaic6x6 (uint32 phase)
 			
 			}
 
-		info = temp;
+		dng_mosaic_info &info = temp;
 		
 		}
 		
